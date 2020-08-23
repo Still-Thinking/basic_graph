@@ -3,4 +3,4 @@ class Edge(tuple):
         return tuple.__new__(cls, (a,b))
 
     def __repr__(self):
-        return f"Edge({repr(self[0])}, {reprself[1])})"
+        return f"Edge({repr(self[0])}, {repr(self[1])})"
