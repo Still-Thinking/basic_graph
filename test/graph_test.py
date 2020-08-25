@@ -44,3 +44,9 @@ def test_create_unconnected_graph():
     assert t.vertex_count == 1
     assert t.edge_count == 0
     assert len(list(t.keys())) == 1
+
+def test_create_fully_connected_graph():
+    vs= [Vertex(x) for x in "abcdef"]
+    t = Graph.fully_connected(vs)
+    assert t.vertex_count == 6
+    assert t.edge_count == 15
