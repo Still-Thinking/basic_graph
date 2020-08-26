@@ -2,10 +2,6 @@ from .vertex import Vertex
 from .edge import Edge
 
 class Graph(dict):
-    _vertex_count = 0
-    _edge_count = 0
-    _vertices = set()
-    _edges = set()
     @property
     def vertex_count(self):
         return self._vertex_count
@@ -80,6 +76,10 @@ class Graph(dict):
         return f"Graph contains {v} vertices and {e} edge"
 
     def __init__(self, vertices, edges):
+        self._vertex_count = 0
+        self._edge_count = 0
+        self._vertices = set()
+        self._edges = set()
         for v in vertices:
             self.add_vertex(v)
         for e in edges:
@@ -87,10 +87,16 @@ class Graph(dict):
 
     def add_vertex(self, v):
         assert isinstance(v, Vertex), f"Must be a Vertex, not {type(v)}"
-        if v not in self.vertices:
+        if self.find_vertex(v.label) is None:
             self[v]={}
             self._vertices.add(v)
             self._vertex_count += 1
+
+    def find_vertex(self, v_label):
+        for v in self.vertices:
+            if v_label == v.label:
+                return v
+        return None
 
     def remove_vertex(self, v):
         assert isinstance(v, Vertex), f"Must be a Vertex, not {type(v)}"
@@ -103,12 +109,21 @@ class Graph(dict):
 
     def add_edge(self, e):
         assert isinstance(e, Edge), f"Must be a Edge, not {type(e)}"
-        if e not in self._edges:
+        if self.find_edge((e[0].label, e[1].label)) is None:
             v, w = e
             self[v][w] = e
             self[w][v] = e
             self._edges.add(e)
             self._edge_count += 1
+
+    def find_edge(self, e_labels):
+        assert type(e_labels) == tuple, "Lookup must be by tuple"
+        assert len(e_labels) == 2, "Lookup tuple must have exactly 2 entries"
+        chk = set((e_labels[0],e_labels[1]))
+        for e in self.edges:
+            if chk == set((e[0].label, e[1].label)):
+                return e
+        return None
 
     def remove_edge(self, e):
         assert isinstance(e, Edge), f"Must be a Vertex, not {type(e)}"
