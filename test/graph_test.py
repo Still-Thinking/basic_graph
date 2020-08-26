@@ -50,3 +50,28 @@ def test_create_fully_connected_graph():
     t = Graph.fully_connected(vs)
     assert t.vertex_count == 6
     assert t.edge_count == 15
+
+def test_create_even_connected_graph_even_graph():
+    vs= [Vertex(x) for x in "abcd"]
+    t = Graph.regular_connected(vs, 2)
+    assert t.vertex_count == 4
+    assert t.edge_count == 4
+
+def test_create_odd_connected_graph_even_graph():
+    vs= [Vertex(x) for x in "abcd"]
+    t = Graph.regular_connected(vs, 3)
+    assert t.vertex_count == 4
+    assert t.edge_count == 6
+
+def test_create_odd_connected_graph_odd_graph():
+    PASSED = False
+    vs= [Vertex(x) for x in "abcde"]
+    try:
+        t = Graph.regular_connected(vs, 3)
+    except AssertionError:
+        PASSED = True
+    if PASSED:
+        assert True
+    else:
+        assert False
+
